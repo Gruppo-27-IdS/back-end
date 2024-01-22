@@ -30,12 +30,7 @@ const projectsSchema = new mongoose.Schema({
   opensource: {
     type: Boolean,
     default: true,
-  },
-  likes: {
-    type: Number,
-    default: 0,
-    min:0
-  },
+  }
 });
 
 module.exports = mongoose.model("Project", projectsSchema);

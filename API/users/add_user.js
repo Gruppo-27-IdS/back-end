@@ -12,7 +12,17 @@ router.use(express.json());
 /**
  * POST /add_user
  * Add a new user to the database.
+ * @var {string} username - The username of the user.
+ * @var {string} name - The name of the user.
+ * @var {string} surname - The surname of the user.
+ * @var {number} age - The age of the user.
+ * @var {string} phone - The phone number of the user.
+ * @var {string} email - The email of the user.
+ * @var {string} password - The password of the user.
  * JSON
+ * @returns {string} message - The result message.
+ * 201 - User Added Successfully
+ * 500 - Error while adding user to database
  */
 router.post("/add_user", async (req, res) => {
     try {

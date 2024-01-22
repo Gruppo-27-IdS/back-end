@@ -13,8 +13,16 @@ router.use(express.json());
 
 /**
  * POST /login
- * login a user to the database.
+ * Login with credencials.
+ * @var {string} username - The username of the user.
+ * @var {string} password - The password of the user.
  * JSON
+ * @returns {string} message - The result message.
+ * 201 - User Added Successfully
+ * 401 - Credenziali non valide
+ * 500 - Errore durante il login
+ * @returns {string} token - the autentication token.
+ * @returns {User} user - the user object.
  */
 router.post('/login_user', async (req, res) => {
     const { username, password } = req.body;
