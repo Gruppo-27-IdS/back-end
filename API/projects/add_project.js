@@ -2,6 +2,8 @@
 const express = require("express");
 const router = express.Router();
 const Project = require("../../models/projects");
+const User = require("../../models/users");
+const Manager = require("../../models/managers");
 const validate_token = require("../validate_token");
 
 // Define the route for adding a new project
@@ -31,7 +33,8 @@ router.post("/add_project", validate_token, async (req, res) => {
       category,
       start_date,
       end_date,
-      opensource
+      opensource,
+      manager
     } = req.body;
     const project = new Project({
       name,
@@ -41,8 +44,24 @@ router.post("/add_project", validate_token, async (req, res) => {
       end_date,
       opensource
     });
-    // Save the project to the database
+
     await project.save();
+    const managerExists = await User.findOne({ username: manager });
+    
+    if(!!managerExists){
+      const user_id=managerExists._id;
+      const project_id=project._id;
+      const manager = new Manager({
+        user_id,
+        project_id
+      });
+    await manager.save();
+         
+    }else{
+        res.status(500).json({ message: "User does not exists", type: "danger" });
+    }
+    // Save the project to the database
+    
     res.status(201).json({ message: "Project added successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message, type: "danger" });
