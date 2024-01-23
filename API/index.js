@@ -14,5 +14,6 @@ router.use("/", require("./projects/add_project"));
 router.use("/", require("./projects/add_proj_to_manager"));
 router.use("/", require("./projects/get_proj_list"));
 router.use("/", require("./projects/get_proj_by_name"));
+router.use("/", require("./projects/delete_project"));
 
 module.exports = router;

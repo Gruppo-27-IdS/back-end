@@ -1,4 +1,5 @@
 const express = require("express");
+const validateToken = require("../validate_token");
 const User = require("../../models/users");
 const router = express.Router();
 // Middleware per gestire i dati JSON nelle richieste
@@ -7,7 +8,7 @@ router.use(express.json());
 // delete user by id
 // POST /remove_user/
 // Params: id
-router.post("/remove_user/", (req, res) => {
+router.post("/remove_user/", validateToken, (req, res) => {
     let id = req.body.id;
     User.findByIdAndDelete(id)
       .then((data) => {
