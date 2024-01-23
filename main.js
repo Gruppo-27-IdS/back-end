@@ -24,6 +24,12 @@ app.set('view engine', 'ejs');
 //route prefix
 app.use('', require('./routes/route'));
 
+// Consenti a tutti i domini di accedere alle risorse
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+  });
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 });
