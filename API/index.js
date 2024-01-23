@@ -13,5 +13,6 @@ router.use("/", require("./users/user_login"));
 router.use("/", require("./projects/add_project"));
 router.use("/", require("./projects/add_proj_to_manager"));
 router.use("/", require("./projects/get_proj_list"));
+router.use("/", require("./projects/get_proj_by_name"));
 
 module.exports = router;
