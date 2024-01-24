@@ -15,7 +15,6 @@ router.get("/get_all_projects", async (req, res) => {
             const project = projects[i];
             const manager = await Manager.findOne({ project_id: project._id });
             const user = await User.findById( manager.user_id );
-            console.log(user);
             projects[i] = {
                 _id: project._id,
                 name: project.name, 
@@ -33,6 +32,7 @@ router.get("/get_all_projects", async (req, res) => {
                     phone: user.phone,
                     email: user.email,
                 },
+                images: project.images
             };
         }
         // Respond with the users in JSON format

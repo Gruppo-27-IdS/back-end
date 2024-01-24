@@ -5,6 +5,8 @@
 const express = require("express");
 const multer = require("multer");
 const validateToken = require("../validate_token");
+const path = require("path");
+const Project = require("../../models/projects");
 const router = express.Router();
 
 // Middleware to handle JSON data in requests
@@ -15,46 +17,41 @@ router.use(express.json());
  * The uploaded image will be stored in the "./uploads" directory.
  * The filename will be generated using the fieldname, current timestamp, and original filename.
  */
-var nomeCartella="";
+var project;
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./projects_images/nomeCartella");
+    cb(null, "./projects_images/");
   },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + Date.now() + "_" + file.originalname);
+  filename: async function (req, file, cb) {
+    project=await Project.findById(req.body.project_id);
+    cb(null, project.name+"#"+Date.now() + "_" + path.extname(file.originalname) );
   },
 });
 
-var upload = multer({ storage: storage });
+var upload = multer({ storage: storage }).single("image");
 
 /**
  * POST /upload_proje_images
  */
-router.post("/upload_proj_images", validateToken, async (req, res) => {
+router.post("/upload_proj_images", upload, validateToken, async (req, res) => {
   try {
-    if (!req.body.files) {
-        return res.status(400).json({ error: 'Il campo "files" è richiesto' });
-    }
     // Extract data from the POST input
-    const { project } = req.body;
+    var { project_id } = req.body;
 
-    nomeCartella = project._id+"_"+project.name;
-
-    
-    //salvo le immagini
-    await upload.array("files");
-    // Salva i nomi dei file in un array
-    const nomiFile = req.body.files;
-
-    //aggiungo i nomi dei file al progetto
-    project.images.push(nomiFile);
-    // Save the user to the database
-
-
-    await project.save();
-
-    // Respond with a success message
-    res.status(201).json({ message: "User Added Successfully" });
+    if (!project) {
+      res.status(500).json({ message: "Project not found", type: "danger" });
+    } else {
+      nomeCartella = project._id + "_" + project.name;
+      // Salva i nomi dei file in un array
+      const nomeFile = req.file.filename;
+      project.images.push(nomeFile);
+      // Save the user to the database
+      await project.save();
+      // Respond with a success message
+      res
+        .status(201)
+        .json({ message: "Image Added Successfully to " + project.name });
+    }
   } catch (error) {
     // Respond with an error message
     res.status(500).json({ message: error.message, type: "danger" });
