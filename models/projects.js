@@ -30,7 +30,11 @@ const projectsSchema = new mongoose.Schema({
   opensource: {
     type: Boolean,
     default: true,
-  }
+  },
+  images: {
+    type: Array,
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("Project", projectsSchema);

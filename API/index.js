@@ -1,5 +1,4 @@
 const express = require("express");
-const cors = require('cors');
 const router = express.Router();
 //file d'appoggio per collegare le API
 
@@ -16,5 +15,6 @@ router.use("/", require("./projects/add_proj_to_manager"));
 router.use("/", require("./projects/get_proj_list"));
 router.use("/", require("./projects/get_proj_by_name"));
 router.use("/", require("./projects/delete_project"));
+router.use("/", require("./projects/upload_images"));
 
 module.exports = router;

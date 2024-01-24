@@ -17,7 +17,7 @@ db.once('open', () => console.log('Connected to Database'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use(express.static('uploads'));
+app.use(express.static('projects_images'));
 
 //set temple engine
 app.set('view engine', 'ejs');
@@ -30,7 +30,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
   });
-  
+
 app.use(cors());
 
 // Altri middleware e route possono seguire...
