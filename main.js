@@ -30,6 +30,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
   });
+  
 app.use(cors());
 
 // Altri middleware e route possono seguire...

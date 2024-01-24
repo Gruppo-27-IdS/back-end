@@ -1,10 +1,11 @@
 const express = require("express");
 const Project = require("../../models/projects");
+const cors = require('cors');
 const router = express.Router();
 
 // Middleware per gestire i dati JSON nelle richieste
 router.use(express.json());
-
+router.use(cors());
 router.get("/get_all_projects", async (req, res) => {
     try {
         // Retrieve all users
