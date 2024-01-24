@@ -2,6 +2,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -29,7 +30,11 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
   });
+app.use(cors());
 
+// Altri middleware e route possono seguire...
+
+const PORT = 5000;
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
