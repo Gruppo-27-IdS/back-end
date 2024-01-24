@@ -29,6 +29,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
   });
+router.use(cors({ origin: 'http://localhost:5173' }));
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
