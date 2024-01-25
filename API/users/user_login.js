@@ -31,13 +31,13 @@ router.post('/login_user', async (req, res) => {
       const user = await User.findOne({ username });
   
       if (!user) {
-        return res.status(401).json({ message: 'Credenziali non valide' });
+        return res.status(401).json({ message: 'Nome utente non trovato' });
       }
   
       const passwordMatch = await bcrypt.compare(password, user.password);
   
       if (!passwordMatch) {
-        return res.status(401).json({ message: 'Credenziali non valide' });
+        return res.status(401).json({ message: 'Password errata' });
       }
   
       // Puoi creare un token JWT per l'autenticazione se le credenziali sono valide

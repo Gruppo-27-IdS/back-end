@@ -3,7 +3,6 @@ const express = require("express");
 const router = express.Router();
 const Project = require("../../models/projects");
 const User = require("../../models/users");
-const fs = require("fs");
 const Manager = require("../../models/managers");
 const validate_token = require("../validate_token");
 
@@ -57,29 +56,6 @@ router.post("/add_project", validate_token, async (req, res) => {
         project_id
       });
     await manager.save();
-    // Verifica se la cartella esiste già
-    fs.stat(nomeCartella, (err, stats) => {
-      if (err) {
-        if (err.code === "ENOENT") {
-          // La cartella non esiste, la creiamo
-          fs.mkdir(nomeCartella, (err) => {
-            if (err) {
-              console.error(
-                `Errore durante la creazione della cartella: ${err}`
-              );
-            } else {
-              console.log(`Cartella "${nomeCartella}" creata con successo.`);
-            }
-          });
-        } else {
-          // Altri tipi di errore
-          console.error(`Errore durante la verifica della cartella: ${err}`);
-        }
-      } else {
-        // La cartella esiste già
-        console.log(`La cartella "${nomeCartella}" esiste già.`);
-      }
-    });
     }else{
         res.status(500).json({ message: "User does not exists", type: "danger" });
     }

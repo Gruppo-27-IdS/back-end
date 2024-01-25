@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use(express.static('projects_images'));
+app.use(express.static('news_files'));
 
 //set temple engine
 app.set('view engine', 'ejs');
