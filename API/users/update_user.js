@@ -17,36 +17,47 @@ router.use(express.json());
  * @name POST/api/update_user
  * @function
  */
-router.post("/update_user", validateToken ,async (req, res) => {
-    try {
-        // Extract data from JSON input
-        const { id, username, name, surname, email, phone, age, password } = req.body;
-        // Update the user
-        const user= await User.findById(id);
-        if(!!user){
-            user.name = name;
-            user.email = email;
-            user.phone = phone;
-            user.age = age;
-            user.password = password;
-            user.username = username;
-            user.surname = surname;            
-
-            User.findByIdAndUpdate(id, user, { new: true })
-                .then((data) => {
-                    // Respond with success message
-                    res.status(201).json({ message: "User Updated Successfully" });
-                })
-                .catch((error) => {
-                    res.json({ message: error, type: "danger" });
-                });
-        }else{
-            res.status(500).json({ message: "User not found", type: "danger" });
+router.post("/update_user", validateToken, async (req, res) => {
+  try {
+    // Extract data from JSON input
+    const { id, username, name, surname, email, phone, age, password } =
+      req.body;
+    // Update the user
+    const user = await User.findById(id);
+    if (!!user) {
+      if (password != user.password) {
+        if (await User.checkPassword(password)) {
+          user.password = await User.encryptPassword(password);
+          console.log(user.password + " " + password);
+        } else {
+          res
+            .status(500)
+            .json({ message: "password is not valid", type: "danger" });
+          return;
         }
-    } catch (error) {
-        // Respond with error message
-        res.status(500).json({ message: error.message, type: "danger" });
+      }
+      user.name = name;
+      user.email = email;
+      user.phone = phone;
+      user.age = age;
+      user.surname = surname;
+      user.username = username;
+
+      User.findByIdAndUpdate(id, user, { new: true })
+        .then((data) => {
+          // Respond with success message
+          res.status(201).json({ message: "User Updated Successfully" });
+        })
+        .catch((error) => {
+          res.json({ message: error, type: "danger" });
+        });
+    } else {
+      res.status(500).json({ message: "User not found", type: "danger" });
     }
+  } catch (error) {
+    // Respond with error message
+    res.status(500).json({ message: error.message, type: "danger" });
+  }
 });
 
 module.exports = router;

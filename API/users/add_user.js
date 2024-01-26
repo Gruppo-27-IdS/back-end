@@ -29,12 +29,7 @@ router.post("/add_user", async (req, res) => {
         // Extract data from the POST input
         const { username, name, surname, age, phone, email, password } = req.body;
 
-        // Check if password contains at least one capital letter, one special character, and one number
-        const hasCapitalLetter = /[A-Z]/.test(password);
-        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-        const hasNumber = /[0-9]/.test(password);
-
-        if (hasCapitalLetter && hasSpecialChar && hasNumber) {
+        if (await User.checkPassword(password)) {
             // Create a new user
             const newUser = new User({
                 username,
