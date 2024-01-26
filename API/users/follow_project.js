@@ -1,6 +1,45 @@
 /**
- * @fileoverview This file contains the API endpoint for adding an user.
- * @module API/follow_project
+ * @swagger
+ * /api/follow_project:
+ *   post:
+ *     summary: Follow a project
+ *     description: Follow a project by providing user_id and project_id
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: User ID and Project ID
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             user_id:
+ *               type: string
+ *               description: User ID
+ *             project_id:
+ *               type: string
+ *               description: Project ID
+ *     responses:
+ *       201:
+ *         description: The user followed a new project successfully
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               description: Success message
+ *       500:
+ *         description: Error occurred while following the project
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               description: Error message
+ *             type:
+ *               type: string
+ *               description: Error type
  */
 const express = require("express");
 const User = require("../../models/users");
@@ -13,7 +52,9 @@ const router = express.Router();
 // Middleware to handle JSON data in requests
 router.use(express.json());
 
-router.post("/follow_project",validateToken, async (req, res) => {
+
+
+router.post("/follow_project", validateToken, async (req, res) => {
   try {
     // Extract data from the POST input
     const { user_id, project_id } = req.body;
@@ -31,14 +72,23 @@ router.post("/follow_project",validateToken, async (req, res) => {
         .status(201)
         .json({ message: "The user follow a new project Successfully" });
     } else {
-        if(!!f)
-            res.status(500).json({ message: "Already following", type: "danger" });
-        else if(!u)
-            res.status(500).json({ message: "User does not exists", type: "danger" });
-        else if(!p)
-            res.status(500).json({ message: "Project does not exists", type: "danger" });
-        else if(!!m)
-            res.status(500).json({ message: "User is a manager of this project", type: "danger" });
+      if (!!f)
+        res.status(500).json({ message: "Already following", type: "danger" });
+      else if (!u)
+        res
+          .status(500)
+          .json({ message: "User does not exists", type: "danger" });
+      else if (!p)
+        res
+          .status(500)
+          .json({ message: "Project does not exists", type: "danger" });
+      else if (!!m)
+        res
+          .status(500)
+          .json({
+            message: "User is a manager of this project",
+            type: "danger",
+          });
     }
   } catch (error) {
     // Respond with an error message

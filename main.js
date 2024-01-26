@@ -1,8 +1,10 @@
 //imports
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -10,27 +12,52 @@ const port = process.env.PORT || 4000;
 //connect to database
 mongoose.connect(process.env.DB_URI);
 const db = mongoose.connection;
-db.on('error', (error) => console.log(error));
-db.once('open', () => console.log('Connected to Database'));
+db.on("error", (error) => console.log(error));
+db.once("open", () => console.log("Connected to Database"));
 
 //middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use(express.static('projects_images'));
-app.use(express.static('news_files'));
+app.use(express.static("projects_images"));
+app.use(express.static("news_files"));
+
+//swagger
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: "YouProject API",
+      description: "YouProject API Information",
+      contact: {
+        name: "Andrea, Elia, Lorenzo",
+      },
+      servers: ["http://localhost:5000"],
+      
+    },
+    securityDefinitions: {
+      BearerAuth: {
+        type: "apiKey",
+        in: "header",
+        name: "token",
+      },
+    },
+  },
+  apis: ["./API/users/*.js", "./API/projects/*.js", "./API/news/*.js"],
+};
+const spacs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(spacs));
 
 //set temple engine
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
 //route prefix
-app.use('', require('./routes/route'));
+app.use("", require("./routes/route"));
 
 // Consenti a tutti i domini di accedere alle risorse
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-  });
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
 
 app.use(cors());
 
@@ -39,5 +66,5 @@ app.use(cors());
 const PORT = 5000;
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Example app listening at http://localhost:${port}`);
 });

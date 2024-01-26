@@ -1,7 +1,3 @@
-/**
- * @fileoverview This file contains the API endpoint for adding an user.
- * @module API/add_user
- */
 const express = require("express");
 const User = require("../../models/users");
 const router = express.Router();
@@ -10,20 +6,63 @@ const router = express.Router();
 router.use(express.json());
 
 /**
- * POST /add_user
- * Add a new user to the database.
- * @var {string} username - The username of the user.
- * @var {string} name - The name of the user.
- * @var {string} surname - The surname of the user.
- * @var {number} age - The age of the user.
- * @var {string} phone - The phone number of the user.
- * @var {string} email - The email of the user.
- * @var {string} password - The password of the user.
- * JSON
- * @returns {string} message - The result message.
- * 201 - User Added Successfully
- * 500 - Error while adding user to database
+ * @swagger
+ * /api/add_user:
+ *   post:
+ *     summary: Add a new user
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: body
+ *         name: user
+ *         description: The user to add
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             username:
+ *               type: string
+ *             name:
+ *               type: string
+ *             surname:
+ *               type: string
+ *             age:
+ *               type: number
+ *             phone:
+ *               type: string
+ *             email:
+ *               type: string
+ *             password:
+ *               type: string
+ *     responses:
+ *       201:
+ *         description: User Added Successfully
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 type:
+ *                   type: string
+ *                   enum: ["danger"]
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 type:
+ *                   type: string
+ *                   enum: ["danger"]
  */
+  
 router.post("/add_user", async (req, res) => {
     try {
         // Extract data from the POST input
@@ -51,7 +90,7 @@ router.post("/add_user", async (req, res) => {
         }
     } catch (error) {
         // Respond with an error message
-        res.status(500).json({ message: error.message, type: "danger" });
+        res.status(501).json({ message: error.message, type: "danger" });
     }
 });
 
