@@ -1,19 +1,20 @@
 const express = require("express");
 const Project = require("../../models/projects");
-const Follower = require("../../models/follower");
 const Manager = require("../../models/managers");
+const Follower = require("../../models/follower");
 const User = require("../../models/users");
 const validateToken = require("../validate_token");
+8;
 const router = express.Router();
 
 // Middleware per gestire i dati JSON nelle richieste
 router.use(express.json());
 /**
  * @swagger
- * /api/explore_projects:
+ * /api/get_followed_projects:
  *   post:
- *     summary: Explore projects
- *     description: Retrieve projects that the user is not currently following.
+ *     summary: Get followed projects
+ *     description: Retrieve projects that the user is currently following.
  *     tags:
  *       - Projects
  *     security:
@@ -21,19 +22,19 @@ router.use(express.json());
  *     parameters:
  *       - in: body
  *         name: body
- *         description: User ID for exploring projects.
+ *         description: User ID for getting followed projects.
  *         required: true
  *         schema:
  *           type: object
  *           properties:
  *             user_id:
  *               type: string
- *               description: User ID for exploring projects.
+ *               description: User ID for getting followed projects.
  *         example:
  *           user_id: "user123"
  *     responses:
  *       200:
- *         description: Successful response with a list of projects.
+ *         description: Successful response with a list of followed projects.
  *         content:
  *           application/json:
  *             schema:
@@ -86,6 +87,11 @@ router.use(express.json());
  *                       email:
  *                         type: string
  *                         description: The email of the manager.
+ *                   images:
+ *                     type: array
+ *                     description: An array of image URLs associated with the project.
+ *                     items:
+ *                       type: string
  *                 example:
  *                   - _id: "project123"
  *                     name: "Project Name"
@@ -102,7 +108,10 @@ router.use(express.json());
  *                       age: 30
  *                       phone: "+1234567890"
  *                       email: "john.doe@example.com"
- *                   - ... (additional projects)
+ *                     images:
+ *                       - "image1.jpg"
+ *                       - "image2.jpg"
+ *                   - ... (additional followed projects)
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -120,43 +129,37 @@ router.use(express.json());
  *               message: Internal Server Error
  *               type: danger
  */
-router.post("/explore_projects", validateToken, async (req, res) => {
+
+router.post("/get_followed_projects", validateToken, async (req, res) => {
   try {
-    //trova tutti i progetti che non segui
-    const return_projects = [];
-    const { user_id } = req.body;
+    const user_id = req.body.user_id;
     // Retrieve all projects from the database
-    const projects = await Project.find();
-    for (let i = 0; i < projects.length; i++) {
-      const project = projects[i];
+    const followed = await Follower.find({ user_id: user_id });
+    const return_projects = [];
+    for (let i = 0; i < followed.length; i++) {
+      const project = await Project.findById(followed[i].project_id);
       const manager = await Manager.findOne({ project_id: project._id });
-      const follow = await Follower.findOne({
-        user_id: user_id,
-        project_id: project._id,
-      });
-      if (!follow && manager.user_id != user_id) {
-        const user = await User.findOne({ _id: manager.user_id });
-        p = {
-          _id: project._id,
-          name: project.name,
-          description: project.description,
-          category: project.category,
-          start_date: project.start_date,
-          end_date: project.end_date,
-          opensource: project.opensource,
-          manager: {
-            _id: user._id,
-            username: user.username,
-            name: user.name,
-            surname: user.surname,
-            age: user.age,
-            phone: user.phone,
-            email: user.email,
-          },
-          images: project.images,
-        };
-        return_projects.push(p);
-      }
+      const user = await User.findById(manager.user_id);
+      f = {
+        _id: project._id,
+        name: project.name,
+        description: project.description,
+        category: project.category,
+        start_date: project.start_date,
+        end_date: project.end_date,
+        opensource: project.opensource,
+        manager: {
+          _id: user._id,
+          username: user.username,
+          name: user.name,
+          surname: user.surname,
+          age: user.age,
+          phone: user.phone,
+          email: user.email,
+        },
+        images: project.images,
+      };
+        return_projects.push(f);
     }
     // Respond with the users in JSON format
     res.status(200).json(return_projects);

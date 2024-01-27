@@ -1,19 +1,19 @@
 const express = require("express");
 const Project = require("../../models/projects");
-const Follower = require("../../models/follower");
 const Manager = require("../../models/managers");
 const User = require("../../models/users");
 const validateToken = require("../validate_token");
+8;
 const router = express.Router();
 
 // Middleware per gestire i dati JSON nelle richieste
 router.use(express.json());
 /**
  * @swagger
- * /api/explore_projects:
+ * /api/get_proj_created:
  *   post:
- *     summary: Explore projects
- *     description: Retrieve projects that the user is not currently following.
+ *     summary: Get projects created by a user
+ *     description: Retrieve projects created by a user based on their user_id.
  *     tags:
  *       - Projects
  *     security:
@@ -21,19 +21,19 @@ router.use(express.json());
  *     parameters:
  *       - in: body
  *         name: body
- *         description: User ID for exploring projects.
+ *         description: User ID for getting projects created by the user.
  *         required: true
  *         schema:
  *           type: object
  *           properties:
  *             user_id:
  *               type: string
- *               description: User ID for exploring projects.
+ *               description: User ID for getting projects created by the user.
  *         example:
  *           user_id: "user123"
  *     responses:
  *       200:
- *         description: Successful response with a list of projects.
+ *         description: Successful response with a list of projects created by the user.
  *         content:
  *           application/json:
  *             schema:
@@ -86,6 +86,11 @@ router.use(express.json());
  *                       email:
  *                         type: string
  *                         description: The email of the manager.
+ *                   images:
+ *                     type: array
+ *                     description: An array of image URLs associated with the project.
+ *                     items:
+ *                       type: string
  *                 example:
  *                   - _id: "project123"
  *                     name: "Project Name"
@@ -95,14 +100,17 @@ router.use(express.json());
  *                     end_date: "2024-12-31"
  *                     opensource: true
  *                     manager:
- *                       _id: "manager123"
+ *                       _id: "user123"
  *                       username: "john_doe"
  *                       name: "John"
  *                       surname: "Doe"
  *                       age: 30
  *                       phone: "+1234567890"
  *                       email: "john.doe@example.com"
- *                   - ... (additional projects)
+ *                     images:
+ *                       - "image1.jpg"
+ *                       - "image2.jpg"
+ *                   - ... (additional projects created by the user)
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -120,43 +128,35 @@ router.use(express.json());
  *               message: Internal Server Error
  *               type: danger
  */
-router.post("/explore_projects", validateToken, async (req, res) => {
+router.post("/get_proj_created", validateToken, async (req, res) => {
   try {
-    //trova tutti i progetti che non segui
-    const return_projects = [];
-    const { user_id } = req.body;
+    const user_id = req.body.user_id;
     // Retrieve all projects from the database
-    const projects = await Project.find();
-    for (let i = 0; i < projects.length; i++) {
-      const project = projects[i];
-      const manager = await Manager.findOne({ project_id: project._id });
-      const follow = await Follower.findOne({
-        user_id: user_id,
-        project_id: project._id,
-      });
-      if (!follow && manager.user_id != user_id) {
-        const user = await User.findOne({ _id: manager.user_id });
-        p = {
-          _id: project._id,
-          name: project.name,
-          description: project.description,
-          category: project.category,
-          start_date: project.start_date,
-          end_date: project.end_date,
-          opensource: project.opensource,
-          manager: {
-            _id: user._id,
-            username: user.username,
-            name: user.name,
-            surname: user.surname,
-            age: user.age,
-            phone: user.phone,
-            email: user.email,
-          },
-          images: project.images,
-        };
-        return_projects.push(p);
-      }
+    const created = await Manager.find({ user_id: user_id });
+    const return_projects = [];
+    for (let i = 0; i < created.length; i++) {
+      const project = await Project.findById(created[i].project_id);
+      const user = await User.findById(user_id);
+      f = {
+        _id: project._id,
+        name: project.name,
+        description: project.description,
+        category: project.category,
+        start_date: project.start_date,
+        end_date: project.end_date,
+        opensource: project.opensource,
+        manager: {
+          _id: user._id,
+          username: user.username,
+          name: user.name,
+          surname: user.surname,
+          age: user.age,
+          phone: user.phone,
+          email: user.email,
+        },
+        images: project.images,
+      };
+        return_projects.push(f);
     }
     // Respond with the users in JSON format
     res.status(200).json(return_projects);

@@ -21,6 +21,8 @@ router.use("/", require("./projects/delete_project"));
 router.use("/", require("./projects/upload_images"));
 router.use("/", require("./projects/get_proj_by_id"));
 router.use("/", require("./projects/explore_projects"));
+router.use("/", require("./projects/get_followed_projects"));
+router.use("/", require("./projects/get_proj_created"));
 
 //NEWS API
 router.use("/", require("./news/add_news"));
