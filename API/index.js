@@ -9,6 +9,7 @@ router.use("/", require("./users/update_user"));
 router.use("/", require("./users/get_all_users"));
 router.use("/", require("./users/user_login"));
 router.use("/", require("./users/follow_project"));
+router.use("/", require("./users/unfollow_project"));
 router.use("/", require("./users/get_user_by_id"));
 
 //PROJECTS API
@@ -19,6 +20,7 @@ router.use("/", require("./projects/get_proj_by_name"));
 router.use("/", require("./projects/delete_project"));
 router.use("/", require("./projects/upload_images"));
 router.use("/", require("./projects/get_proj_by_id"));
+router.use("/", require("./projects/explore_projects"));
 
 //NEWS API
 router.use("/", require("./news/add_news"));

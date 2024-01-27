@@ -6,6 +6,8 @@
  *     description: Follow a project by providing user_id and project_id
  *     tags:
  *       - Users
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: body
  *         name: body
@@ -51,8 +53,6 @@ const router = express.Router();
 
 // Middleware to handle JSON data in requests
 router.use(express.json());
-
-
 
 router.post("/follow_project", validateToken, async (req, res) => {
   try {
