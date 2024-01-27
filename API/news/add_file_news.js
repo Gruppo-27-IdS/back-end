@@ -30,8 +30,69 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single("attachment");
 
 /**
- * POST /upload_proje_images
+ * @swagger
+ * /api/add_file_news:
+ *   post:
+ *     summary: Add a file to news
+ *     description: Add an attachment file to a specific news article.
+ *     tags:
+ *       - News
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: formData
+ *         name: attachment
+ *         description: The file to upload as an attachment.
+ *         type: file
+ *         required: true
+ *       - in: formData
+ *         name: news_id
+ *         description: The ID of the news article to associate the uploaded file with.
+ *         type: string
+ *         required: true
+ *     responses:
+ *       '201':
+ *         description: File Added Successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: A success message
+ *             example:
+ *               message: File Added Successfully to Sample News
+ *       '404':
+ *         description: News not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating that the news was not found
+ *             example:
+ *               message: News not found
+ *       '500':
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message
+ *                 type:
+ *                   type: string
+ *                   description: The type of error
+ *             example:
+ *               message: Internal Server Error
+ *               type: danger
  */
+
 router.post("/add_file_news", upload, validateToken, async (req, res) => {
   try {
     // Extract data from the POST input

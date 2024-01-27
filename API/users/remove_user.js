@@ -7,7 +7,7 @@ router.use(express.json());
 /**
  * @swagger
  * /api/remove_user:
- *   post:
+ *   delete:
  *     summary: Remove user by ID
  *     description: Remove a user from the database by ID
  *     tags:
@@ -68,7 +68,7 @@ router.use(express.json());
  *               message: Internal Server Error
  *               type: danger
  */
-router.post("/remove_user/", validateToken, (req, res) => {
+router.delete("/remove_user/", validateToken, (req, res) => {
     let id = req.body.id;
     User.findByIdAndDelete(id)
       .then((data) => {

@@ -7,7 +7,7 @@ const router = express.Router();
 // Middleware per gestire i dati JSON nelle richieste
 router.use(express.json());
 /**
- * TODO: da documentare 
+ * TODO: DA RIFARE
  * comunque dato nome utente o nome progetto restituisce i progetti
  * JSON
  * @returns {string} message - The result message.

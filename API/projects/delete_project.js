@@ -8,10 +8,76 @@ const router = express.Router();
 // Middleware per gestire i dati JSON nelle richieste
 router.use(express.json());
 
-// delete user by id
-// POST /remove_project/
-// Params: id
-router.post("/delete_project/",validateToken, async (req, res) => {
+/**
+ * @swagger
+ * /api/delete_project:
+ *   delete:
+ *     summary: Delete project by ID
+ *     description: Delete a project and associated manager by project ID.
+ *     tags:
+ *       - Projects
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: JSON input containing the project_id to be deleted.
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             project_id:
+ *               type: string
+ *         example:
+ *           project_id: "project123"
+ *     responses:
+ *       '201':
+ *         description: Project Removed Successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: A success message
+ *             example:
+ *               message: Project Removed Successfully
+ *       '404':
+ *         description: Project or Manager Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating that the project or manager was not found
+ *                 type:
+ *                   type: string
+ *                   description: The type of error
+ *             example:
+ *               message: Project Not Found
+ *               type: danger
+ *       '500':
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message
+ *                 type:
+ *                   type: string
+ *                   description: The type of error
+ *             example:
+ *               message: Internal Server Error
+ *               type: danger
+ */
+
+router.delete("/delete_project/",validateToken, async (req, res) => {
     const project = await Project.findById(req.body.project_id);
     //eliminare le foto
     for (let i = 0; i < project.images.length; i++) {

@@ -29,8 +29,57 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single("image");
 
+
 /**
- * POST /upload_proje_images
+ * @swagger
+ * /api/upload_proj_images:
+ *   post:
+ *     summary: Upload project images
+ *     description: Upload an image for a project.
+ *     tags:
+ *       - Projects
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: formData
+ *         name: image
+ *         description: The image file to upload.
+ *         type: file
+ *         required: true
+ *       - in: formData
+ *         name: project_id
+ *         description: The ID of the project to associate the uploaded image with.
+ *         type: string
+ *         required: true
+ *     responses:
+ *       '201':
+ *         description: Image Added Successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: A success message
+ *             example:
+ *               message: Image Added Successfully to Sample Project
+ *       '500':
+ *         description: Project not found or internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message
+ *                 type:
+ *                   type: string
+ *                   description: The type of error
+ *             example:
+ *               message: Project not found
+ *               type: danger
  */
 router.post("/upload_proj_images", upload, validateToken, async (req, res) => {
   try {
