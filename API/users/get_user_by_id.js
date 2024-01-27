@@ -17,19 +17,18 @@ router.use(express.json());
  *       - Users
  *     security:
  *       - BearerAuth: []
- *     requestBody:
- *       description: Numeric ID of the user to retrieve
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               id: 
- *                 type: string
- *           example:
- *             value:
- *               id: "user123"
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: Numeric ID of the user to retrieve
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: string
+ *         example:
+ *           id: "user123"
  *     responses:
  *       '200':
  *         description: OK

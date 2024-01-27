@@ -22,7 +22,7 @@ router.use(express.json());
  *             schema:
  *               type: array
  *               items:
- *                 $ref: './models/users'
+ *                 $ref: './models/users.js'
  *       500:
  *         description: Internal server error. Returns an error message.
  *         content:

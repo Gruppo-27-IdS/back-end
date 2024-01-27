@@ -4,10 +4,70 @@ const User = require("../../models/users");
 const router = express.Router();
 // Middleware per gestire i dati JSON nelle richieste
 router.use(express.json());
-
-// delete user by id
-// POST /remove_user/
-// Params: id
+/**
+ * @swagger
+ * /api/remove_user:
+ *   post:
+ *     summary: Remove user by ID
+ *     description: Remove a user from the database by ID
+ *     tags:
+ *       - Users
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: Numeric ID of the user to be removed
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: string
+ *         example:
+ *           id: "user123"
+ *     responses:
+ *       '201':
+ *         description: User Removed Successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: A success message
+ *             example:
+ *               message: User Removed Successfully
+ *       '404':
+ *         description: User Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message indicating that the user was not found
+ *             example:
+ *               message: User Not Found
+ *       '500':
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message
+ *                 type:
+ *                   type: string
+ *                   description: The type of error
+ *             example:
+ *               message: Internal Server Error
+ *               type: danger
+ */
 router.post("/remove_user/", validateToken, (req, res) => {
     let id = req.body.id;
     User.findByIdAndDelete(id)

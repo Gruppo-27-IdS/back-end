@@ -1,8 +1,3 @@
-/**
- * @fileoverview This file contains the API endpoint for edit an user by id.
- * @module API/update_user
- */
-
 const express = require("express");
 const User = require("../../models/users");
 const validateToken = require("../validate_token");
@@ -10,12 +5,78 @@ const router = express.Router();
 
 // Middleware to handle JSON data in requests
 router.use(express.json());
-
 /**
- * POST /api/update_user
- * Updates a user.
- * @name POST/api/update_user
- * @function
+ * @swagger
+ * /api/update_user:
+ *   post:
+ *     summary: Update user by ID
+ *     description: Update user information by ID
+ *     tags:
+ *       - Users
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: JSON input containing user data to be updated
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: string
+ *             username:
+ *               type: string
+ *             name:
+ *               type: string
+ *             surname:
+ *               type: string
+ *             email:
+ *               type: string
+ *             phone:
+ *               type: string
+ *             age:
+ *               type: number
+ *             password:
+ *               type: string
+ *         example:
+ *           id: "user123"
+ *           username: "john_doe"
+ *           name: "John"
+ *           surname: "Doe"
+ *           email: "john.doe@example.com"
+ *           phone: "+1234567890"
+ *           age: 30
+ *           password: "newpassword"
+ *     responses:
+ *       '201':
+ *         description: User Updated Successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: A success message
+ *             example:
+ *               message: User Updated Successfully
+ *       '500':
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message
+ *                 type:
+ *                   type: string
+ *                   description: The type of error
+ *             example:
+ *               message: Internal Server Error
+ *               type: danger
  */
 router.post("/update_user", validateToken, async (req, res) => {
   try {
