@@ -29,5 +29,6 @@ router.use("/", require("./news/add_news"));
 router.use("/", require("./news/add_like"));
 router.use("/", require("./news/add_comment"));
 router.use("/", require("./news/add_file_news"));
+router.use("/", require("./news/get_news_by_proj"));
 
 module.exports = router;
