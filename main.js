@@ -65,6 +65,11 @@ app.use(cors());
 
 const PORT = 5000;
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+if (require.main === module) {
+  // Avvia il server solo se l'applicazione è in modalità standalone
+  app.listen(port, () => {
+    console.log(`YouProjectDB listening at http://localhost:${port}`);
+  });
+}
+
+module.exports = app;

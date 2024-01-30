@@ -82,7 +82,7 @@ router.post("/login_user", async (req, res) => {
 
     // Puoi creare un token JWT per l'autenticazione se le credenziali sono valide
     const token = jwt.sign({ username: username }, "ABFC", {
-      expiresIn: 86400,
+      expiresIn: 864000,
     });
 
     res.status(200).json({ message: "Login riuscito", token, user });

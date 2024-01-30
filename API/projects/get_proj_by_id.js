@@ -1,5 +1,6 @@
 const express = require("express");
 const Project = require("../../models/projects");
+const mongoose = require('mongoose');
 const router = express.Router();
 
 // Middleware per gestire i dati JSON nelle richieste
@@ -107,12 +108,18 @@ router.use(express.json());
  */
 router.post("/get_proj_by_id", async (req, res) => {
     try {
-        const { project_id} = req.body;
+        const { project_id } = req.body;
+        
+        if (!mongoose.Types.ObjectId.isValid(project_id)) {
+            res.status(400).json({ message: "Invalid project_id", type: "danger" });
+            return;
+        }
+
         const project = await Project.findById(project_id);
-        if(!!project){
-            res.status(200).json({message: "Project found!",project});
-        }else{
-            res.status(404).json({ message: "Project does not exists", type: "danger" });
+        if (!!project) {
+            res.status(200).json({ message: "Project found!", project });
+        } else {
+            res.status(404).json({ message: "Project does not exist", type: "danger" });
         }    
     } catch (error) {
         // Respond with an error message
