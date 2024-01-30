@@ -89,7 +89,6 @@ router.post("/add_news",validateToken, async (req, res) => {
   try {
     const author = req.body.author;
     const project = await Project.findById(req.body.project_id);
-    console.log(project);
     const user = await User.findOne({ username: author });
     if (!!project && !!user) {
       // Extract the news data from the request body

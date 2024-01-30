@@ -31,8 +31,41 @@
  *             message:
  *               type: string
  *               description: Success message
- *       500:
- *         description: Error occurred while following the project
+ *       401:
+ *         description: User does not exist
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               description: Error message
+ *             type:
+ *               type: string
+ *               description: Error type
+ *       402:
+ *         description: Project does not exist
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               description: Error message
+ *             type:
+ *               type: string
+ *               description: Error type
+ *       403:
+ *         description: User is a manager of this project
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               description: Error message
+ *             type:
+ *               type: string
+ *               description: Error type
+ *       405:
+ *         description: Already following the project
  *         schema:
  *           type: object
  *           properties:
@@ -73,18 +106,18 @@ router.post("/follow_project", validateToken, async (req, res) => {
         .json({ message: "The user follow a new project Successfully" });
     } else {
       if (!!f)
-        res.status(500).json({ message: "Already following", type: "danger" });
+        res.status(405).json({ message: "Already following", type: "danger" });
       else if (!u)
         res
-          .status(500)
+          .status(401)
           .json({ message: "User does not exists", type: "danger" });
       else if (!p)
         res
-          .status(500)
+          .status(402)
           .json({ message: "Project does not exists", type: "danger" });
       else if (!!m)
         res
-          .status(500)
+          .status(403)
           .json({
             message: "User is a manager of this project",
             type: "danger",
