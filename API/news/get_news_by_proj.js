@@ -101,7 +101,6 @@ router.use(express.json());
 router.post("/get_news_by_proj", async (req, res) => {
     try {
         const project_id = req.body.project_id;
-        console.log(project_id);
         // Retrieve all projects from the database
         const news = await News.find({ project_id: project_id });
         // Respond with the users in JSON format

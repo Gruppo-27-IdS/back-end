@@ -73,8 +73,6 @@ userSchema.statics.checkPassword = async function (password) {
   const hasCapitalLetter = /[A-Z]/.test(password);
   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
   const hasNumber = /[0-9]/.test(password);
-  console.log(password);
-  console.log(hasCapitalLetter, hasSpecialChar, hasNumber);
   return (hasCapitalLetter && hasSpecialChar && hasNumber);
 };
 
