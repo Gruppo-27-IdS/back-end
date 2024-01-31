@@ -42,7 +42,6 @@ const newsSchema = new mongoose.Schema({
   },
   author_id: {
     type: String,
-    required: true,
   },
   publish_date: {
     type: Date,
