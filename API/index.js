@@ -12,6 +12,7 @@ router.use("/", require("./users/follow_project"));
 router.use("/", require("./users/unfollow_project"));
 router.use("/", require("./users/get_user_by_id"));
 router.use("/", require("./users/add_support_proj"));
+router.use("/", require("./users/get_user_role"));
 
 //PROJECTS API
 router.use("/", require("./projects/add_project"));

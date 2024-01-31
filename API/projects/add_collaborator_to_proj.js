@@ -54,8 +54,6 @@ const Follower = require("../../models/follower");
 const Collaborator = require("../../models/collaborators");
 const validate_token = require("../validate_token");
 
-
-
 router.post("/add_collaborator_to_proj", validate_token, async (req, res) => {
   try {
     const { project_id, user_id } = req.body;
