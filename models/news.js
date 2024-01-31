@@ -40,6 +40,10 @@ const newsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  author_id: {
+    type: String,
+    required: true,
+  },
   publish_date: {
     type: Date,
     required: false,

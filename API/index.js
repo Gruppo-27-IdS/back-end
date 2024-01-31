@@ -11,6 +11,7 @@ router.use("/", require("./users/user_login"));
 router.use("/", require("./users/follow_project"));
 router.use("/", require("./users/unfollow_project"));
 router.use("/", require("./users/get_user_by_id"));
+router.use("/", require("./users/add_support_proj"));
 
 //PROJECTS API
 router.use("/", require("./projects/add_project"));
@@ -23,6 +24,7 @@ router.use("/", require("./projects/get_proj_by_id"));
 router.use("/", require("./projects/explore_projects"));
 router.use("/", require("./projects/get_followed_projects"));
 router.use("/", require("./projects/get_proj_created"));
+router.use("/", require("./projects/add_collaborator_to_proj"));
 
 //NEWS API
 router.use("/", require("./news/add_news"));

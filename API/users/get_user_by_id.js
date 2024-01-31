@@ -1,6 +1,5 @@
 const express = require("express");
 const User = require("../../models/users");
-const validateToken = require("../validate_token");
 const router = express.Router();
 
 // Middleware per gestire i dati JSON nelle richieste
@@ -15,8 +14,6 @@ router.use(express.json());
  *     description: Retrieve user information by ID
  *     tags:
  *       - Users
- *     security:
- *       - BearerAuth: []
  *     parameters:
  *       - in: body
  *         name: body
@@ -80,7 +77,7 @@ router.use(express.json());
  *               type: danger
  */
 
-router.post("/get_user_by_id", validateToken, async (req, res) => {
+router.post("/get_user_by_id", async (req, res) => {
   const { id } = req.body;
   try {
     // Retrieve all users

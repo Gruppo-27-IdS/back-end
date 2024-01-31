@@ -100,6 +100,7 @@ router.post("/add_news",validateToken, async (req, res) => {
         description: req.body.description,
         publish_date: req.body.publish_date,
         author: req.body.author,
+        author_id: user._id,
       });
 
       // Save the news object to the database

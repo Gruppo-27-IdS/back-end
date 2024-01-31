@@ -51,6 +51,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: Date.now,
   },
+  supported_projects: {
+    type: Number,
+    required: false,
+    default: 0,
+  },
 });
 
 userSchema.pre("save", async function (next) {
