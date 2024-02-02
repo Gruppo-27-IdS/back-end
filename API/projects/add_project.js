@@ -111,7 +111,6 @@ router.post("/add_project", validate_token, async (req, res) => {
       opensource
     });
 
-    await project.save();
     const managerExists = await User.findOne({ username: manager });
     
     if(!!managerExists){
@@ -122,12 +121,14 @@ router.post("/add_project", validate_token, async (req, res) => {
         project_id
       });
     await manager.save();
+    await project.save();
+    res.status(201).json({ message: "Project added successfully" });
     }else{
         res.status(500).json({ message: "User does not exists", type: "danger" });
     }
     // Save the project to the database
     
-    res.status(201).json({ message: "Project added successfully" });
+    
   } catch (error) {
     res.status(500).json({ message: error.message, type: "danger" });
   }

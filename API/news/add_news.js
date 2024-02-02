@@ -3,8 +3,10 @@ const express = require("express");
 const router = express.Router();
 const News = require("../../models/news");
 const Project = require("../../models/projects");
+const managers = require("../../models/managers");
 const User = require("../../models/users");
 const validateToken = require("../validate_token");
+const collaborators = require("../../models/collaborators");
 router.use(express.json());
 /**
  * @swagger
@@ -85,31 +87,44 @@ router.use(express.json());
  *               error: Internal Server Error
  */
 // Define the route for adding a news
-router.post("/add_news",validateToken, async (req, res) => {
+router.post("/add_news", validateToken, async (req, res) => {
   try {
     const author = req.body.author;
     const project = await Project.findById(req.body.project_id);
     const user = await User.findOne({ username: author });
-    if (!!project && !!user) {
-      // Extract the news data from the request body
-      //  senza allegati
-      const news = new News({
-        project_id: req.body.project_id,
-        project_name: project.name,
-        title: req.body.title,
-        description: req.body.description,
-        publish_date: req.body.publish_date,
-        author: req.body.author,
-        author_id: user._id,
+    if (!user || !project) {
+      res.status(404).json({ message: "Author/Project Not Found" });
+    } else {
+      var manager = await managers.findOne({
+        user_id: user._id,
+        project_id: project._id,
       });
+      var collaborator = await collaborators.findOne({
+        user_id: user._id,
+        project_id: project._id,
+      });
+      if (!manager && !collaborator) {
+        res.status(404).json({ message: "The user in not a Collaborator or a manager" });
+      } else {
+        const user_id = (manager || collaborator).user_id;
+        // Extract the news data from the request body
+        //  senza allegati
+        const news = new News({
+          project_id: req.body.project_id,
+          project_name: project.name,
+          title: req.body.title,
+          description: req.body.description,
+          publish_date: req.body.publish_date,
+          author: req.body.author,
+          author_id: user_id,
+        });
 
-      // Save the news object to the database
-      await news.save();
+        // Save the news object to the database
+        await news.save();
 
-      // Return a success response
-      res.status(201).json({ message: "News added successfully" });
-    }else{
-        res.status(404).json({ message: "Project/Author Not Found" });
+        // Return a success response
+        res.status(201).json({ message: "News added successfully" });
+      }
     }
   } catch (error) {
     // Return an error response
