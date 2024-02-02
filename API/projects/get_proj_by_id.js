@@ -1,5 +1,6 @@
 const express = require("express");
 const Project = require("../../models/projects");
+const User = require("../../models/users");
 const mongoose = require('mongoose');
 const router = express.Router();
 
@@ -116,8 +117,9 @@ router.post("/get_proj_by_id", async (req, res) => {
         }
 
         const project = await Project.findById(project_id);
-        if (!!project) {
-            res.status(200).json({ message: "Project found!", project });
+        const user = await User.findById(project.manager);
+        if (!!project && !!user) {
+            res.status(200).json({ message: "Project found!", project, user });
         } else {
             res.status(404).json({ message: "Project does not exist", type: "danger" });
         }    
