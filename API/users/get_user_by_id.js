@@ -89,6 +89,7 @@ router.post("/get_user_by_id", async (req, res) => {
       surname: user.surname,
       phone: user.phone,
       age: user.age,
+      supported_projects: user.supported_projects,
     };
     // Respond with the users in JSON format
     res.status(200).json(specialUser);
