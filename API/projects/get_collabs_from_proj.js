@@ -110,7 +110,7 @@ router.post("/get_collabs_from_proj", async (req, res) => {
                 returnUsers.push(user);
             }
             if(returnUsers.length === 0){
-                res.status(404).json({ message: "No collaborators found", collaborators: returnUsers});
+                res.status(200).json({ message: "No collaborators found", collaborators: returnUsers});
                 return;
             }
             res.status(200).json({ message: "Collaborators found!", collaborators: returnUsers });
