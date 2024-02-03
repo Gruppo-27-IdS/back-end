@@ -40,7 +40,7 @@ router.use(express.json());
  *                 collaborators:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/User'
+ *                     $ref: './models/users'
  *       404:
  *         description: Project not found.
  *         content:
