@@ -26,6 +26,7 @@ router.use("/", require("./projects/explore_projects"));
 router.use("/", require("./projects/get_followed_projects"));
 router.use("/", require("./projects/get_proj_created"));
 router.use("/", require("./projects/add_collaborator_to_proj"));
+router.use("/", require("./projects/get_collabs_from_proj"));
 
 //NEWS API
 router.use("/", require("./news/add_news"));

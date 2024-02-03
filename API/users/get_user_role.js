@@ -12,27 +12,27 @@ router.use(express.json());
 
 /**
  * @swagger
- * /get_user_role:
+ * /api/get_user_role:
  *   post:
  *     summary: Get the role of a user in a project
  *     tags:
  *       - Users
  *     security:
  *       - BearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               user_id:
- *                 type: string
- *               project_id:
- *                 type: string
- *             example:
- *               user_id: 1234567890
- *               project_id: abcdefghij
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: User ID and Project ID
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             user_id:
+ *               type: string
+ *               description: User ID
+ *             project_id:
+ *               type: string
+ *               description: Project ID
  *     responses:
  *       201:
  *         description: Role successfully retrieved
