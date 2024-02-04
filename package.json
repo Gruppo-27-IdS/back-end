@@ -1,9 +1,12 @@
 {
+  "homepage": "https://gruppo-27-ids.github.io/back-end/",
   "name": "node_crud_app",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "nodemon main.js",
     "test": "jest --detectOpenHandles --config ./jest.config.json"
   },
@@ -23,6 +26,7 @@
     "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
+    "gh-pages": "^6.1.1",
     "nodemon": "^3.0.3",
     "swagger-autogen": "^2.23.7"
   }
