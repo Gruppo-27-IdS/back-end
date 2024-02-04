@@ -5,8 +5,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    
+    
     "start": "nodemon main.js",
     "test": "jest --detectOpenHandles --config ./jest.config.json"
   },
