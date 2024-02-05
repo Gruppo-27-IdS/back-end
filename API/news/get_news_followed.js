@@ -74,33 +74,32 @@ router.use(express.json());
  *               type: danger
  */
 
-
-router.post("/get_news_followed",validateToken, async (req, res) => {
+router.post("/get_news_followed", validateToken, async (req, res) => {
   try {
     const return_news = [];
     const user_id = req.body.user_id;
     const projectsFollowed = await Follower.find({ user_id: user_id });
-    if(!projectsFollowed){
+    if (!projectsFollowed) {
       res.status(404).json({ message: "User Not Found" });
-    }else{
-        for (const project of projectsFollowed) {
-            const news = await News.find({ project_id: project.project_id });
-            for (const n of news) {
-                return_news.push(n);
-            }
+    } else {
+      for (const project of projectsFollowed) {
+        const news = await News.find({ project_id: project.project_id });
+        for (const n of news) {
+          if (n.publish_date <= new Date()) return_news.push(n);
         }
-        const projectsManaged = await Manager.find({ user_id: user_id });
-        if(!!projectsManaged){
-            for (const project of projectsManaged) {
-                const news = await News.find({ project_id: project.project_id });                
-                for (const n of news) {
-                    return_news.push(n);
-                }
-            }
+      }
+      const projectsManaged = await Manager.find({ user_id: user_id });
+      if (!!projectsManaged) {
+        for (const project of projectsManaged) {
+          const news = await News.find({ project_id: project.project_id });
+          for (const n of news) {
+            return_news.push(n);
+          }
         }
-        //ordino
-        return_news.sort((a, b) => (a.publish_date < b.publish_date) ? 1 : -1);
-        res.status(200).json(return_news);
+      }
+      //ordino
+      return_news.sort((a, b) => (a.publish_date < b.publish_date ? 1 : -1));
+      res.status(200).json(return_news);
     }
   } catch (error) {
     // Respond with an error message
