@@ -103,8 +103,12 @@ router.post("/get_news_by_proj", async (req, res) => {
         const project_id = req.body.project_id;
         // Retrieve all projects from the database
         const news = await News.find({ project_id: project_id });
+        const return_news = [];
+        for (const n of news) {
+            if (n.publish_date <= new Date()) return_news.push(n);
+        }
         // Respond with the users in JSON format
-        res.status(200).json(news);
+        res.status(200).json(return_news);
     } catch (error) {
         // Respond with an error message
         res.status(500).json({ message: error.message, type: "danger" });

@@ -5,12 +5,20 @@
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
+<<<<<<< HEAD
+=======
+    "start:dev": "nodemon main.js",
+>>>>>>> ee4280f461d8410013691d7f65c81e8d5b1e0417
     "test": "jest --detectOpenHandles --config ./jest.config.json"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.6.7",
+<<<<<<< HEAD
+=======
+    "bcrypt": "^5.1.1",
+>>>>>>> ee4280f461d8410013691d7f65c81e8d5b1e0417
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",

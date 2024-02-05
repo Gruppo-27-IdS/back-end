@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const path = require("path");
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -60,6 +59,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, '/views', 'index.html'));
 });
 */
+
 
 // Consenti a tutti i domini di accedere alle risorse
 app.use((req, res, next) => {
