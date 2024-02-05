@@ -5,10 +5,11 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const path = require("path");
 
 const app = express();
 const port = process.env.PORT || 4000;
-
+//
 //connect to database
 mongoose.connect(process.env.DB_URI);
 const db = mongoose.connection;
@@ -52,6 +53,13 @@ app.set("view engine", "ejs");
 
 //route prefix
 app.use("", require("./routes/route"));
+
+// Servi i file statici dalla build di React
+app.use(express.static(path.join(__dirname, '/views')));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, '/views', 'index.html'));
+});
+
 
 // Consenti a tutti i domini di accedere alle risorse
 app.use((req, res, next) => {
