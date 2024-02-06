@@ -54,11 +54,11 @@ app.set("view engine", "ejs");
 app.use("", require("./routes/route"));
 
 // Servi i file statici dalla build di React
-/*app.use(express.static(path.join(__dirname, '/views')));
+app.use(express.static(path.join(__dirname, '/views')));
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, '/views', 'index.html'));
 });
-*/
+
 
 
 // Consenti a tutti i domini di accedere alle risorse
