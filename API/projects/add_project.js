@@ -122,7 +122,7 @@ router.post("/add_project", validate_token, async (req, res) => {
       });
     await manager.save();
     await project.save();
-    res.status(201).json({ message: "Project added successfully" });
+    res.status(201).json({ message: "Project added successfully", project_id: project._id});
     }else{
         res.status(500).json({ message: "User does not exists", type: "danger" });
     }

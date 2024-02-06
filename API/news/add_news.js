@@ -123,7 +123,7 @@ router.post("/add_news", validateToken, async (req, res) => {
         await news.save();
 
         // Return a success response
-        res.status(201).json({ message: "News added successfully" });
+        res.status(201).json({ message: "News added successfully" , news_id: news._id});
       }
     }
   } catch (error) {

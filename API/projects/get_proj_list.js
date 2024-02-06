@@ -117,6 +117,7 @@ router.get("/get_all_projects", async (req, res) => {
         const projects = await Project.find();
         for (let i = 0; i < projects.length; i++) {
             const project = projects[i];
+            console.log(project);
             const manager = await Manager.findOne({ project_id: project._id });
             const user = await User.findById( manager.user_id );
             projects[i] = {
