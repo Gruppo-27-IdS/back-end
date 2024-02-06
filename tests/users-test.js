@@ -9,8 +9,8 @@ let token; // Inserisci il tuo token valido qui
 describe("API Testing", () => {
   test("should respond with a JWT token on successful login", async () => {
     const response = await request(app).post("/api/login_user").send({
-      username: "Carzeri10",
-      password: "Qwerty123!",
+      username: "UtenteProva2",
+      password: "Password123!",
     });
 
     expect(response.status).toBe(200);
