@@ -7,13 +7,69 @@ const router = express.Router();
 // Middleware per gestire i dati JSON nelle richieste
 router.use(express.json());
 /**
- * TODO: DA RIFARE
- * comunque dato nome utente o nome progetto restituisce i progetti
- * JSON
- * @returns {string} message - The result message.
- * 201 - User Added Successfully
- * 500 - Error while adding user to database
+ * @swagger
+ * /api/get_proj_by_name:
+ *   post:
+ *     summary: Get projects by name or manager
+ *     description: Retrieve projects either by project name or by manager username.
+ *     tags:
+ *       - Projects
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               manager:
+ *                 type: string
+ *                 description: The username of the manager.
+ *               project_name:
+ *                 type: string
+ *                 description: The name of the project.
+ *     responses:
+ *       200:
+ *         description: Projects retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Project'
+ *       400:
+ *         description: Bad request, missing parameters.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message.
+ *                 type:
+ *                   type: string
+ *                   description: The type of error.
+ *             example:
+ *               message: Bad request, missing parameters
+ *               type: danger
+ *       500:
+ *         description: Internal Server Error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message.
+ *                 type:
+ *                   type: string
+ *                   description: The type of error.
+ *             example:
+ *               message: Internal Server Error
+ *               type: danger
  */
+
 router.post("/get_proj_by_name", async (req, res) => {
     try {
     

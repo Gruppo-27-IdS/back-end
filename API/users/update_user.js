@@ -107,13 +107,13 @@ router.post("/update_user", validateToken, async (req, res) => {
       User.findByIdAndUpdate(id, user, { new: true })
         .then((data) => {
           // Respond with success message
-          res.status(201).json({ message: "User Updated Successfully" });
+          res.status(200).json({ message: "User Updated Successfully" });
         })
         .catch((error) => {
           res.json({ message: error, type: "danger" });
         });
     } else {
-      res.status(500).json({ message: "User not found", type: "danger" });
+      res.status(404).json({ message: "User not found", type: "danger" });
     }
   } catch (error) {
     // Respond with error message

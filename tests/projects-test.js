@@ -2,10 +2,12 @@ const request = require('supertest');
 const app = require('../main'); // Assicurati di impostare il percorso corretto per il tuo file principale dell'API
 const Project = require('../models/projects');
 const Manager = require('../models/managers');
+const User = require('../models/users');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 let newProjectId;  // Inserisci l'ID del progetto creato qui
 describe('API Testing', () => {
+  let userID;
 
   test('should get project by ID successfully', async () => {
     // Crea un progetto per il test
@@ -18,15 +20,25 @@ describe('API Testing', () => {
       opensource: true,
     });
     newProjectId = newProject._id;  // Salva l'ID del progetto per i test successivi
-
+    const newUser = new User({
+      username: "TestUserToRemove",
+      name: "John",
+      surname: "Doe",
+      age: 25,
+      phone: "123456789",
+      email: "testuser@example.com",
+      password: "SecurePwd123!",
+    });
+    userID = newUser._id;
     const newManager = new Manager({
         project_id: newProjectId,
-        user_id: new mongoose.Types.ObjectId(),
+        user_id: newUser._id,
       });
 
     // Salva il progetto nel database
     await newProject.save();
     await newManager.save();
+    await newUser.save();
 
 
     // Effettua una richiesta POST per ottenere il progetto per ID
@@ -84,6 +96,7 @@ describe('API Testing', () => {
 
     // Verifica che la risposta contenga un messaggio di successo
     expect(response.body).toHaveProperty('message', 'Project Removed Successfully');
+    await User.findByIdAndDelete(userID);
   });
   // Aggiungi altri test a seconda delle tue esigenze
 });
