@@ -86,7 +86,7 @@ router.post("/add_user", async (req, res) => {
             // Respond with a success message
             res.status(201).json({ message: "User Added Successfully" });
         } else {
-            res.status(500).json({ message: "password is not valid", type: "danger" });
+            res.status(400).json({ message: "password is not valid", type: "danger" });
         }
     } catch (error) {
         // Respond with an error message
