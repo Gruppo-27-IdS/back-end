@@ -51,7 +51,7 @@ describe("API Testing", () => {
 
     // Assicurati che la risposta abbia uno stato 500 (errore interno del server)
     // poiché la password non è valida
-    expect(response.status).toBe(500);
+    expect(response.status).toBe(400);
 
     // Verifica che la risposta contenga un messaggio di errore appropriato
     expect(response.body).toHaveProperty("message", "password is not valid");
