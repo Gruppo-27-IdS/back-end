@@ -97,7 +97,7 @@ router.delete("/remove_user/", validateToken, (req, res) => {
               data: { project_id: m.project_id }, // Dati da inviare nel corpo della richiesta
             };
             try {
-                const response = await axios.delete("http://localhost:5000/api/delete_project", options);
+                const response = await axios.delete("https://you-project-backend-3fc4476a9bed.herokuapp.com/api/delete_project", options);
               } catch (apiError) {
                 console.error("Error in project deletion API:", apiError.response.data);
                 // Puoi gestire l'errore qui in base alle tue esigenze
